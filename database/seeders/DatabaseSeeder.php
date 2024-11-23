@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'admin',
+            'email' => 'admin@a.com',
+            'password' => '$2y$12$5lN5YbzMmJx/ePLv.XbmWeoSSGHELi4FE9jxqIBy66q.qk8PeTeBu',
         ]);
     }
 }

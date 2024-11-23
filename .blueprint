@@ -1,2 +1,39 @@
+created:
+    - app/Http/Controllers/PositionController.php
+    - app/Http/Controllers/VacancyController.php
+    - app/Http/Controllers/ApplicationController.php
+    - database/factories/PositionFactory.php
+    - database/factories/VacancyFactory.php
+    - database/factories/ApplicationFactory.php
+    - database/migrations/2024_11_22_130941_create_positions_table.php
+    - database/migrations/2024_11_22_130942_create_vacancies_table.php
+    - database/migrations/2024_11_22_130943_create_applications_table.php
+    - app/Models/Position.php
+    - app/Models/Vacancy.php
+    - app/Models/Application.php
+    - database/seeders/VacancySeeder.php
+    - database/seeders/PositionSeeder.php
+    - database/seeders/ApplicationSeeder.php
+    - tests/Feature/Http/Controllers/PositionControllerTest.php
+    - tests/Feature/Http/Controllers/VacancyControllerTest.php
+    - tests/Feature/Http/Controllers/ApplicationControllerTest.php
+updated:
+    - routes/web.php
+skipped:
+    - resources/views/position/index.blade.php
+    - resources/views/position/create.blade.php
+    - resources/views/position/show.blade.php
+    - resources/views/position/edit.blade.php
+    - resources/views/vacancy/index.blade.php
+    - resources/views/vacancy/create.blade.php
+    - resources/views/vacancy/show.blade.php
+    - resources/views/vacancy/edit.blade.php
+    - resources/views/application/index.blade.php
+    - resources/views/application/create.blade.php
+    - resources/views/application/show.blade.php
+    - resources/views/application/edit.blade.php
 models:
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }
+    Position: { name: 'string:40 nullable', softdeletes: softDeletes }
+    Vacancy: { position_id: 'id foreign:positions', expected_start_date: 'date nullable', softdeletes: softDeletes }
+    Application: { vacancy_id: 'id foreign:vacancies', notice_period_days: 'id nullable', softdeletes: softDeletes }
