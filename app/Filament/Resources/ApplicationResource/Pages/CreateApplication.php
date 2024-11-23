@@ -12,6 +12,7 @@ class CreateApplication extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        dd($data);
         $data['user_id'] = auth()->user()->id;
         return $data;
     }

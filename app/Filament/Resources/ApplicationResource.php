@@ -29,7 +29,8 @@ class ApplicationResource extends Resource
                 Forms\Components\Select::make('vacancy_id')
                     ->relationship('vacancy', 'id'),
                 Forms\Components\TextInput::make('notice_period_days')
-                    ->numeric(),
+                    ->numeric()
+                    ->required(),
             ]);
     }
 

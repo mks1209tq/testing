@@ -41,4 +41,9 @@ class Application extends Model
     {
         return $this->belongsTo(NoticePeriodDays::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

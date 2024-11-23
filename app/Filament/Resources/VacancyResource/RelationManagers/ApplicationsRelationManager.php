@@ -18,11 +18,11 @@ class ApplicationsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')
-                    ->maxLength(255),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name'),
-                Forms\Components\TextInput::make('notice_period_days'),
+                Forms\Components\TextInput::make('notice_period_days')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
