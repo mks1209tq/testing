@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rule;
+use App\Models\Vacancy;
 
 class ApplicationResource extends Resource
 {
@@ -23,22 +25,37 @@ class ApplicationResource extends Resource
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('vacancy_id')
-                    ->relationship('vacancy', 'id'),
-                Forms\Components\TextInput::make('notice_period_days')
-                    ->numeric()
-                    ->required(),
-            ]);
-    }
+{
+    return $form
+        ->schema([
+            Forms\Components\Select::make('vacancy_id')
+            ->relationship('vacancy', 'id', fn (Builder $query) => 
+            $query->whereDoesntHave('applications', function (Builder $query) {
+                $query->where('user_id', auth()->id());
+                })
+            )
+            ->getOptionLabelFromRecordUsing(fn (Vacancy $record) => 
+                "Position: {$record->position->name} (Start Date: {$record->expected_start_date})"
+            )
+                ->required()
+                ->rules([
+                    Rule::unique('applications', 'vacancy_id')
+                        ->where('user_id', auth()->id())
+                ]),
+            Forms\Components\TextInput::make('notice_period_days')
+                ->numeric()
+                ->required(),
+        ]);
+}
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('vacancy.id')
+                Tables\Columns\TextColumn::make('user.id')
+                    ->numeric()
+                    ->sortable(),
+                    Tables\Columns\TextColumn::make('vacancy.id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('notice_period_days')
@@ -95,6 +112,12 @@ class ApplicationResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])->with('user');
+    }
+
+    // Add this method to enforce unique applications
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

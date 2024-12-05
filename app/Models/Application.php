@@ -19,6 +19,7 @@ class Application extends Model
     protected $fillable = [
         'vacancy_id',
         'notice_period_days',
+        'user_id',
     ];
 
     /**
@@ -42,7 +43,7 @@ class Application extends Model
         return $this->belongsTo(NoticePeriodDays::class);
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
